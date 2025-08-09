@@ -22,10 +22,8 @@ const PrivacyPolicy = () => {
 
         <LegalSection title='1. Introduction'>
           <Text>
-            Canger & Shahab Crimpin GbR ("we", "us", or "our") operates CoverLetterGPT. 
-            This page informs you of our policies regarding the collection, use, and 
-            disclosure of personal data when you use our Service and the choices you 
-            have associated with that data.
+          About This Policy
+          CoverLetterX is operated by Goyley Inc, This page outlines how we collect, use, and share your personal information when you use our services, as well as the options available to you regarding your data.
           </Text>
         </LegalSection>
 
@@ -33,11 +31,11 @@ const PrivacyPolicy = () => {
           <Text>
             The data controller for your personal data is:
             <br />
-            Canger & Shahab Crimpin GbR
+            Goyley Inc.
             <br />
-            Zum Steinberg 12, 69121 Heidelberg, Germany
+            124 Startup Lane, Toronto ON, CANADA
             <br />
-            Email: info.crimpin@gmail.com
+            Email: info.goyley@gmail.com
           </Text>
         </LegalSection>
 
@@ -137,23 +135,21 @@ const PrivacyPolicy = () => {
           <UnorderedList spacing={2}>
             <ListItem>Account data: As long as your account is active</ListItem>
             <ListItem>Generated content: For as long as necessary to provide our services or until you delete your account</ListItem>
-            <ListItem>Payment records: As required by tax laws (typically 10 years in Germany)</ListItem>
           </UnorderedList>
         </LegalSection>
-
         <LegalSection title='7. Your Data Protection Rights'>
-          <Text mb={4}>Under GDPR, you have the following rights:</Text>
+          <Text mb={4}>Under Goyley Inc. , you have the following rights:</Text>
           <UnorderedList spacing={2} mb={4}>
-            <ListItem>Right to access your personal data</ListItem>
-            <ListItem>Right to rectification of inaccurate data</ListItem>
-            <ListItem>Right to erasure ("right to be forgotten")</ListItem>
-            <ListItem>Right to restrict processing</ListItem>
-            <ListItem>Right to data portability</ListItem>
-            <ListItem>Right to object to processing</ListItem>
-            <ListItem>Right to withdraw consent</ListItem>
+            <ListItem>Access: You can request to see the personal information we hold about you.</ListItem>
+            <ListItem>Correction: You can ask us to fix incorrect or incomplete information.</ListItem>
+            <ListItem>Deletion: You may request we delete your data, within legal limits.</ListItem>
+            <ListItem>Restriction: You can limit how we use or share your information.</ListItem>
+            <ListItem>Portability: You can ask for your data in a usable digital format.</ListItem>
+            <ListItem>Objection: You can object to certain uses of your data, like marketing.</ListItem>
+            <ListItem>Consent Withdrawal: You can withdraw your consent at any time.</ListItem>
           </UnorderedList>
           <Text>
-            To exercise these rights, please contact us at info.crimpin@gmail.com
+            To exercise these rights, please contact us at info.goyley@gmail.com
           </Text>
         </LegalSection>
 
@@ -173,13 +169,6 @@ const PrivacyPolicy = () => {
             All third parties are contractually obligated to protect your data and 
             may only use it for specified purposes.
           </Text>
-        </LegalSection>
-
-        <LegalSection title='9. International Data Transfers'>
-          <Text mb={4}>
-            Your data may be transferred to and processed in countries outside the EU. 
-            When this occurs, we ensure appropriate safeguards are in place through:
-          </Text>
           <UnorderedList spacing={2}>
             <ListItem>EU Standard Contractual Clauses</ListItem>
             <ListItem>Adequacy decisions by the European Commission</ListItem>
@@ -187,7 +176,7 @@ const PrivacyPolicy = () => {
           </UnorderedList>
         </LegalSection>
 
-        <LegalSection title='10. Cookies and Tracking'>
+        <LegalSection title='9. Cookies and Tracking'>
           <Text mb={4}>
             Our service does not use cookies or tracking technologies. We prioritize your privacy 
             and have designed our service to function without the need for cookies or similar 
@@ -199,7 +188,7 @@ const PrivacyPolicy = () => {
           </Text>
         </LegalSection>
 
-        <LegalSection title='11. Data Security'>
+        <LegalSection title='10. Data Security'>
           <Text mb={4}>
             We implement appropriate technical and organizational measures to protect 
             your personal data, including:
@@ -212,7 +201,7 @@ const PrivacyPolicy = () => {
           </UnorderedList>
         </LegalSection>
 
-        <LegalSection title='12. Changes to This Privacy Policy'>
+        <LegalSection title='11. Changes to This Privacy Policy'>
           <Text mb={4}>
             We may update our Privacy Policy from time to time. We will notify you of 
             any changes by posting the new Privacy Policy on this page and updating 
@@ -224,23 +213,16 @@ const PrivacyPolicy = () => {
           </Text>
         </LegalSection>
 
-        <LegalSection title='13. Contact Us'>
+        <LegalSection title='12. Contact Us'>
           <Text mb={4}>
             If you have any questions about this Privacy Policy or our data practices, 
             please contact us:
           </Text>
           <UnorderedList spacing={2} mb={4}>
             <ListItem>
-              By email: info.crimpin@gmail.com
-            </ListItem>
-            <ListItem>
-              By mail: Canger & Shahab Crimpin GbR, Zum Steinberg 12, 69121 Heidelberg, Germany
+              By email: info.goyley@gmail.com
             </ListItem>
           </UnorderedList>
-          <Text>
-            You have the right to lodge a complaint with a supervisory authority if you 
-            believe our processing of your personal data violates data protection laws.
-          </Text>
         </LegalSection>
       </VStack>
     </BorderBox>

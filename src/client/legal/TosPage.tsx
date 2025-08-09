@@ -24,37 +24,34 @@ const TermsOfService = () => {
 
         <LegalSection title='1. Company Information (Impressum)'>
           <Text>
-            Canger & Shahab Crimpin GbR
+            Goyley Inc
             <br />
-            Zum Steinberg 12, 69121 Heidelberg, Germany
+            124 Startup Lane, Toronto ON, CANADA
             <br />
-            Email: info.crimpin@gmail@.com
+            Email: info.goyley@gmail@.com
             <br />
-            Partners: Canger & Shahab Crimpin GbR
           </Text>
         </LegalSection>
 
         <LegalSection title='2. Description of Service'>
           <Text>
-            CoverLetterGPT is a SaaS application that uses AI technology to assist users in creating personalized cover letter examples based on their curriculum vitae (CV) and job descriptions. The service is provided from
-            Germany and is subject to German law.
+            CoverLetterX is a SaaS application that uses AI technology to assist users in creating personalized cover letter examples based on their curriculum vitae (CV) and job descriptions.
           </Text>
         </LegalSection>
 
         <LegalSection title='3. Contract Formation'>
-          <Text>By registering for our service, you enter into a legally binding contract with Canger & Shahab Crimpin GbR under German law. The contract is formed when we confirm your registration via email.</Text>
+          <Text></Text>
         </LegalSection>
 
         <LegalSection title='4. User Account and Data Protection'>
-          <Text>To use CoverLetterGPT, you must register for an account and provide accurate and complete information. You are responsible for maintaining the confidentiality of your account and password.</Text>
+          <Text>To use CoverLetterX, you must register for an account and provide accurate and complete information. You are responsible for maintaining the confidentiality of your account and password.</Text>
         </LegalSection>
 
         <LegalSection title='5. Prices and Payment Terms'>
           <Text>
-            Prices are displayed in your local currency where available, with EUR being our base currency. 
-            All prices include applicable taxes (such as VAT for EU customers). Charges for our services 
-            are billed monthly. Your subscription will automatically renew each month unless cancelled 
-            at least one day before the renewal date.
+          rices are displayed in your local currency where available, with CAD as our base currency.
+          All prices include applicable Canadian taxes (such as GST/HST, where required).
+          Charges for our services are billed monthly. Your subscription will automatically renew each month unless cancelled at least one day before the renewal date.
           </Text>
           <UnorderedList mt={2} spacing={2} pl={5}>
             <ListItem>
@@ -63,12 +60,6 @@ const TermsOfService = () => {
             <ListItem>
               The final charge may vary slightly due to exchange rate fluctuations and conversion fees
             </ListItem>
-            <ListItem>
-              For EU customers, prices include applicable Value Added Tax (VAT)
-            </ListItem>
-            <ListItem>
-              For non-EU customers, additional taxes may apply according to local regulations
-            </ListItem>
           </UnorderedList>
         </LegalSection>
 
@@ -76,7 +67,7 @@ const TermsOfService = () => {
           <VStack spacing={6} align='stretch'>
             <Box>
               <Text>
-                As a consumer within the EU, you have the right to withdraw from this contract 
+                As a consumer within the US and Canada , you have the right to withdraw from this contract 
                 within 14 days without giving any reason. The withdrawal period expires after 
                 14 days from the day of contract conclusion.
               </Text>
@@ -95,12 +86,9 @@ const TermsOfService = () => {
               </Text>
 
               <Text mt={4}>
-                Effects of withdrawal: If you withdraw from this contract, we shall reimburse 
-                to you all payments received from you, including the costs of delivery (with 
-                the exception of the supplementary costs resulting from your choice of a type 
-                of delivery other than the least expensive type of standard delivery offered 
-                by us), without undue delay and in any event not later than 14 days from the 
-                day on which we are informed about your decision to withdraw from this contract.
+              Effects of Withdrawal:
+              If you cancel this agreement, we will refund all payments you have made to us, including standard delivery costs (if applicable), without undue delay and no later than 14 days from the date we are notified of your decision to cancel.
+              If you chose a delivery method other than our least expensive standard option, any additional costs may not be reimbursed.
               </Text>
             </Box>
 
@@ -114,14 +102,14 @@ const TermsOfService = () => {
               <VStack align='stretch' spacing={4} color='text-contrast-lg'>
                 <Box>
                   <Text fontWeight='medium'>To:</Text>
-                  <Text>Canger & Shahab Crimpin GbR</Text>
-                  <Text>Zum Steinberg 12, 69121 Heidelberg, Germany</Text>
-                  <Text>Email: info.crimpin@gmail.com</Text>
+                  <Text>Goyley Inc</Text>
+                  <Text>124 Startup Lane, Toronto CANADA</Text>
+                  <Text>Email: info.goyley@gmail.com</Text>
                 </Box>
 
                 <Text>
                   I/We (*) hereby give notice that I/We (*) withdraw from my/our (*) contract 
-                  for the provision of the following service: CoverLetterGPT subscription.
+                  for the provision of the following service: CoverLetterx subscription.
                 </Text>
 
                 <UnorderedList spacing={2} pl={4}>
@@ -148,18 +136,19 @@ const TermsOfService = () => {
 
         <LegalSection title='7. Dispute Resolution'>
           <Text>
-            The European Commission provides a platform for online dispute resolution (OS) which is available at https://ec.europa.eu/consumers/odr/. We are neither obligated nor willing to participate in dispute
-            resolution proceedings before a consumer arbitration board.
+          Dispute Resolution Notice (Canada)
+          In accordance with Canadian consumer protection laws, if you have concerns or disputes regarding our services, we encourage you to contact us directly so we can try to resolve the matter informally. At this time, we are not required to, and do not voluntarily, participate in dispute resolution proceedings before a consumer arbitration board or similar body in Canada.
           </Text>
         </LegalSection>
 
         <LegalSection title='8. Governing Law'>
-          <Text>These Terms are governed by German law. The application of the UN Convention on Contracts for the International Sale of Goods is excluded.</Text>
+          <Text>Governing Law:
+          These Terms are governed by the laws of the Province of Ontario and the applicable laws of Canada. The United Nations Convention on Contracts for the International Sale of Goods does not apply to this agreement..</Text>
         </LegalSection>
 
         <LegalSection title='9. Service Usage and Limitations'>
           <Text>
-            CoverLetterGPT provides AI-assisted cover letter generation services. Users 
+            CoverLetterX provides AI-assisted cover letter generation services. Users 
             acknowledge and agree to the following terms of use:
           </Text>
           <UnorderedList spacing={2} pl={5}>
@@ -184,7 +173,7 @@ const TermsOfService = () => {
 
         <LegalSection title='10. Disclaimer of Liability'>
           <Text>
-            To the maximum extent permitted by applicable law:
+                   To the maximum extent permitted by applicable law:
           </Text>
           <UnorderedList spacing={2} pl={5}>
             <ListItem>
@@ -243,10 +232,6 @@ const TermsOfService = () => {
         <LegalSection title='11. Intellectual Property'>
           <UnorderedList spacing={2} pl={5}>
             <ListItem>
-              The service, including all software, algorithms, and interface designs, 
-              remains the exclusive property of Canger & Shahab Crimpin GbR.
-            </ListItem>
-            <ListItem>
               While users retain rights to their personal information and modified cover 
               letters, the AI-generated content templates are provided under a limited, 
               non-exclusive license for personal use only.
@@ -260,7 +245,7 @@ const TermsOfService = () => {
 
         <LegalSection title="12. Security">
           <Text>
-            CoverLetterGPT does not process any order payments directly through the website. 
+            CoverLetterX does not process any order payments directly through the website. 
             All payments are processed securely through Stripe, a third party online 
             payment provider. When processing payments:
           </Text>

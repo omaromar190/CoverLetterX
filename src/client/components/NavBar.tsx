@@ -50,7 +50,7 @@ export default function NavBar() {
               CoverLetter
             </Heading>
             <Heading size='md' color={gptTextColor}>
-              GPT
+              X
             </Heading>
           </HStack>
         </Link>
@@ -72,6 +72,16 @@ export default function NavBar() {
           </>
         ) : (
           <>
+            <Button
+              isDisabled
+              size='sm'
+              colorScheme='purple'
+              variant='outline'
+              fontWeight='bold'
+              cursor='default'
+            >
+              🎁 Try free 3 credits
+            </Button>
             <NavButton icon={<CgProfile />} to='/login'>
               Login
             </NavButton>
