@@ -1,5 +1,5 @@
 {
-  "name": "coverlettergpt",
+  "name": "coverletterx",
   "type": "module",
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",
@@ -28,5 +28,8 @@
     "prisma": "5.19.1",
     "typescript": "^5.1.0",
     "vite": "^4.3.9"
+  },
+  "scripts": {
+    "heroku-postbuild": "npx wasp build"
   }
 }
