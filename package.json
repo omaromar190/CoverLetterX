@@ -30,6 +30,7 @@
     "vite": "^4.3.9"
   },
   "scripts": {
-    "heroku-postbuild": "npx wasp build"
+    "start": "node server.js",
+    "build": "npx wasp build"
   }
 }
