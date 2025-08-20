@@ -9,8 +9,9 @@
     COPY . .
     
     # Install Wasp CLI
-    RUN curl -L https://github.com/wasp-lang/wasp/releases/latest/download/wasp-linux-x64 -o /usr/local/bin/wasp \
-      && chmod +x /usr/local/bin/wasp
+    RUN curl -L https://github.com/wasp-lang/wasp/releases/download/v0.14.2/wasp-x86_64-linux \
+    -o /usr/local/bin/wasp \
+    && chmod +x /usr/local/bin/wasp
     
     # Build Wasp project
     RUN wasp build
