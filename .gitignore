@@ -1,15 +1,28 @@
-.wasp/
-node_modules/
+# Git repository
+.git
+.gitignore
 
-# Ignore all dotenv files by default to prevent accidentally committing any secrets.
-# To include specific dotenv files, use the `!` operator or adjust these rules.
-.env
-.env.*
+# Node / frontend dependencies
+node_modules
+dist
+build
 
-# Don't ignore example dotenv files.
-!.env.example
-!.env.*.example
+# Logs and temp files
+*.log
+*.tmp
 
+# OS-specific files
 .DS_Store
-# Local Netlify folder
-.netlify
+Thumbs.db
+
+# Archives / downloads
+*.zip
+*.tar.gz
+
+# IDE / editor files
+.vscode
+.idea
+
+# Python cache (if any)
+__pycache__/
+*.pyc
