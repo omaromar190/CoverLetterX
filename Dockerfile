@@ -1,8 +1,9 @@
 # ===== Stage 1: Builder =====
-FROM debian:12 as builder
+FROM debian:12 AS builder
 
-# Wasp version
-ARG WASP_VERSION=0.15.0
+# Set environment variables
+ENV WASP_VERSION=0.15.0
+WORKDIR /app
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
@@ -16,24 +17,19 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
-WORKDIR /app
-
-# Copy project files
+# Copy project files to builder
 COPY . .
 
-# Download Wasp binary directly
+# Download and install Wasp
 RUN curl -L "https://github.com/wasp-lang/wasp/releases/download/v${WASP_VERSION}/wasp-${WASP_VERSION}-linux-x86_64" \
-    -o /usr/local/bin/wasp \
-    && chmod +x /usr/local/bin/wasp
-
-# Optionally build your app here if needed
-# RUN wasp build
+    -o /usr/local/bin/wasp && chmod +x /usr/local/bin/wasp
 
 # ===== Stage 2: Runtime =====
-FROM debian:12-slim
+FROM debian:12-slim AS runtime
 
-# Install runtime dependencies
+WORKDIR /app
+
+# Install minimal runtime dependencies
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
@@ -41,18 +37,15 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
-WORKDIR /app
-
-# Copy built files and Wasp from builder
+# Copy app from builder
 COPY --from=builder /app /app
 COPY --from=builder /usr/local/bin/wasp /usr/local/bin/wasp
 
-# Ensure Wasp is executable
+# Make Wasp executable
 RUN chmod +x /usr/local/bin/wasp
 
-# Expose port if your app runs a server
+# Expose port (adjust if your app uses a different port)
 EXPOSE 8000
 
-# Default command
-CMD ["bash"]
+# Run Wasp server on container start
+CMD ["wasp", "start"]
