@@ -1,4 +1,4 @@
-# CoverLetterGPT.xyz
+# CoverLetterX.com
 
 <img src='public/homepage.png' width='600px'/>
 
