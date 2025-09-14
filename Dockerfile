@@ -1,35 +1,54 @@
 # ---- Builder ----
-    FROM node:20-slim AS builder
-    WORKDIR /app
+    FROM debian:12 AS builder
+
+    # Wasp version (override at build time if needed)
+    ARG WASP_VERSION=0.15.0
+    ENV WASP_VERSION=${WASP_VERSION}
     
-    # Install system dependencies (needed for prisma, etc.)
-    RUN apt-get update && apt-get install -y openssl python3 make g++ curl && rm -rf /var/lib/apt/lists/*
+    # Install build dependencies
+    RUN apt-get update && apt-get install -y \
+        curl \
+        build-essential \
+        gcc \
+        g++ \
+        make \
+        git \
+        tar \
+        gzip \
+        python3 \
+        python3-pip \
+        ca-certificates \
+        && rm -rf /var/lib/apt/lists/*
+    
+    WORKDIR /app
     
     # Copy project files
     COPY . .
     
-    # Install Wasp CLI
-    RUN curl -L https://github.com/wasp-lang/wasp/releases/download/v0.14.2/wasp-x86_64-linux \
-    -o /usr/local/bin/wasp \
-    && chmod +x /usr/local/bin/wasp
+    # Download and install Wasp
+    RUN curl -L "https://github.com/wasp-lang/wasp/releases/download/v${WASP_VERSION}/wasp-${WASP_VERSION}-linux-x86_64.tar.gz" -o /tmp/wasp.tar.gz \
+        && tar -xzf /tmp/wasp.tar.gz -C /usr/local/bin \
+        && rm /tmp/wasp.tar.gz
     
-    # Build Wasp project
+    # Build the Wasp project
     RUN wasp build
     
     # ---- Runner ----
-    FROM node:20-slim
+    FROM debian:12 AS runner
+    
     WORKDIR /app
     
-    # Install runtime deps
-    RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
-    
-    # Copy built app
+    # Copy build output from builder
     COPY --from=builder /app/.wasp/build /app
     
-    # Install backend deps
-    WORKDIR /app/server
-    RUN npm install --omit=dev
+    # Install runtime dependencies
+    RUN apt-get update && apt-get install -y \
+        curl \
+        ca-certificates \
+        && rm -rf /var/lib/apt/lists/*
     
-    EXPOSE 8080
-    CMD ["npm", "start"]
+    EXPOSE 3000
+    
+    # Start the app
+    CMD ["./server"]
     
