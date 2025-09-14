@@ -1,11 +1,10 @@
-# ===== Stage 1: Builder =====
-FROM debian:12 AS builder
+# Base image
+FROM debian:12-slim
 
-# Set environment variables
-ENV WASP_VERSION=0.15.0
+# Set working directory
 WORKDIR /app
 
-# Install build dependencies
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     curl \
     build-essential \
@@ -17,35 +16,23 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy project files to builder
+# Copy app code
 COPY . .
 
-# Download and install Wasp
-RUN curl -L "https://github.com/wasp-lang/wasp/releases/download/v${WASP_VERSION}/wasp-${WASP_VERSION}-linux-x86_64" \
-    -o /usr/local/bin/wasp && chmod +x /usr/local/bin/wasp
+# Detect architecture and download the correct Wasp binary
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then \
+        WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-0.15.0-linux-x86_64"; \
+    elif [ "$ARCH" = "aarch64" ]; then \
+        WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-0.15.0-linux-arm64"; \
+    else \
+        echo "Unsupported architecture: $ARCH" && exit 1; \
+    fi && \
+    curl -L "$WASP_URL" -o /usr/local/bin/wasp && \
+    chmod +x /usr/local/bin/wasp
 
-# ===== Stage 2: Runtime =====
-FROM debian:12-slim AS runtime
+# Expose port if your app uses one (optional)
+EXPOSE 3000
 
-WORKDIR /app
-
-# Install minimal runtime dependencies
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    curl \
-    git \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy app from builder
-COPY --from=builder /app /app
-COPY --from=builder /usr/local/bin/wasp /usr/local/bin/wasp
-
-# Make Wasp executable
-RUN chmod +x /usr/local/bin/wasp
-
-# Expose port (adjust if your app uses a different port)
-EXPOSE 8000
-
-# Run Wasp server on container start
+# Default command to start your app
 CMD ["wasp", "start"]
