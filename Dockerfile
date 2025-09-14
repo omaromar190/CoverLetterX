@@ -1,5 +1,5 @@
-# Base image
-FROM debian:12-slim
+# Use Debian as base
+FROM debian:bookworm-slim
 
 # Set working directory
 WORKDIR /app
@@ -16,10 +16,10 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy app code
+# Copy your app files
 COPY . .
 
-# Detect architecture and download the correct Wasp binary
+# Download the correct Wasp binary based on architecture
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then \
         WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-0.15.0-linux-x86_64"; \
@@ -31,8 +31,6 @@ RUN ARCH=$(uname -m) && \
     curl -L "$WASP_URL" -o /usr/local/bin/wasp && \
     chmod +x /usr/local/bin/wasp
 
-# Expose port if your app uses one (optional)
-EXPOSE 3000
-
-# Default command to start your app
-CMD ["wasp", "start"]
+# Set Wasp as the default command
+ENTRYPOINT ["/usr/local/bin/wasp"]
+CMD ["-h"]
