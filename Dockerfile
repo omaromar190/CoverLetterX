@@ -1,5 +1,5 @@
-# ---------- Builder Stage ----------
-FROM debian:bookworm-slim AS builder
+# -------- Builder Stage --------
+FROM --platform=$BUILDPLATFORM debian:bookworm-slim AS builder
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
@@ -13,11 +13,13 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy your app code
+# Set working directory
 WORKDIR /app
+
+# Copy project files
 COPY . .
 
-# Download Wasp binary based on architecture
+# Detect architecture and download Wasp
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then \
         WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-0.15.0-linux-x86_64"; \
@@ -29,8 +31,8 @@ RUN ARCH=$(uname -m) && \
     curl -L "$WASP_URL" -o /usr/local/bin/wasp && \
     chmod +x /usr/local/bin/wasp
 
-# ---------- Runtime Stage ----------
-FROM debian:bookworm-slim
+# -------- Runtime Stage --------
+FROM debian:bookworm-slim AS runtime
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \
@@ -44,10 +46,11 @@ RUN apt-get update && apt-get install -y \
 COPY --from=builder /app /app
 COPY --from=builder /usr/local/bin/wasp /usr/local/bin/wasp
 
-# Ensure Wasp is executable
+# Make Wasp executable
 RUN chmod +x /usr/local/bin/wasp
 
+# Set working directory
 WORKDIR /app
 
-# Default command
-CMD ["bash"]
+# Start Wasp server on container start
+CMD ["wasp", "start"]
