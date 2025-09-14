@@ -40,3 +40,4 @@ I also implemented a cron job to send an email to the user to notify them 2 week
 
 If you have any other questions, feel free to reach out to me on [twitter](https://twitter.com/hot_town)
 # CoverLetterX
+# CoverLetterX
