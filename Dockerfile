@@ -1,7 +1,7 @@
 # --- Builder stage ---
-FROM debian:bookworm-slim as builder
+FROM debian:bookworm-slim AS builder
 
-# Install dependencies for Wasp build
+# Install dependencies for building
 RUN apt-get update && apt-get install -y \
     curl \
     git \
@@ -18,22 +18,24 @@ COPY . .
 # Install correct Wasp binary (multi-arch)
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then \
-        WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-0.15.0-linux-x86_64"; \
+        WASP_FILE="wasp-0.15.0-linux-x86_64.tar.gz"; \
     elif [ "$ARCH" = "aarch64" ]; then \
-        WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-0.15.0-linux-arm64"; \
+        WASP_FILE="wasp-0.15.0-linux-aarch64.tar.gz"; \
     else \
         echo "Unsupported architecture: $ARCH" && exit 1; \
     fi && \
-    curl -L "$WASP_URL" -o /usr/local/bin/wasp && \
+    curl -L "https://github.com/wasp-lang/wasp/releases/download/v0.15.0/$WASP_FILE" -o /tmp/wasp.tar.gz && \
+    tar -xzf /tmp/wasp.tar.gz -C /tmp && \
+    mv /tmp/wasp /usr/local/bin/wasp && \
     chmod +x /usr/local/bin/wasp
 
 # Build Wasp app -> generates .wasp/out directory
 RUN wasp build
 
 # --- Runtime stage ---
-FROM debian:bookworm-slim as runtime
+FROM debian:bookworm-slim AS runtime
 
-# Install only runtime deps
+# Install runtime dependencies
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
@@ -43,11 +45,14 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy only built artifacts instead of whole repo
+# Copy generated app from builder
 COPY --from=builder /app/.wasp/out /app
 
-# Expose Render’s port (defaults to 10000 if not set)
-EXPOSE ${PORT:-10000}
+# Install server dependencies
+RUN pip3 install -r requirements.txt || true
 
-# Start the prebuilt app directly
-CMD ["sh", "-c", "cd /app && ./server --port ${PORT:-10000} --host 0.0.0.0"]
+# Expose port
+EXPOSE 3000
+
+# Start the app
+CMD ["./start.sh"]
