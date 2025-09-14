@@ -39,3 +39,4 @@ For more info on the prompts and configuration I used for the [OpenAI](https://o
 I also implemented a cron job to send an email to the user to notify them 2 weeks before their subscription ends. I used [SendGrid](https://sendgrid.com/) for the email service.
 
 If you have any other questions, feel free to reach out to me on [twitter](https://twitter.com/hot_town)
+# CoverLetterX
