@@ -1,14 +1,13 @@
-# ---------- Builder Stage ----------
-FROM debian:bookworm-slim AS builder
+# --- Builder stage ---
+FROM debian:bookworm-slim as builder
 
-# Install dependencies
+# Install dependencies for Wasp build
 RUN apt-get update && apt-get install -y \
     curl \
-    build-essential \
+    git \
     python3 \
     python3-pip \
-    git \
-    unzip \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -16,7 +15,7 @@ WORKDIR /app
 # Copy project files
 COPY . .
 
-# Download the correct Wasp binary based on architecture
+# Install correct Wasp binary (multi-arch)
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then \
         WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-0.15.0-linux-x86_64"; \
@@ -28,10 +27,13 @@ RUN ARCH=$(uname -m) && \
     curl -L "$WASP_URL" -o /usr/local/bin/wasp && \
     chmod +x /usr/local/bin/wasp
 
-# ---------- Runtime Stage ----------
-FROM debian:bookworm-slim AS runtime
+# Build Wasp app -> generates .wasp/out directory
+RUN wasp build
 
-# Install runtime dependencies
+# --- Runtime stage ---
+FROM debian:bookworm-slim as runtime
+
+# Install only runtime deps
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
@@ -39,19 +41,13 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy app files from builder
-COPY --from=builder /app /app
-
-# Copy Wasp binary from builder
-COPY --from=builder /usr/local/bin/wasp /usr/local/bin/wasp
-RUN chmod +x /usr/local/bin/wasp
-
-# Set working directory
 WORKDIR /app
 
-# Expose Render default port
-ENV PORT=10000
-EXPOSE 10000
+# Copy only built artifacts instead of whole repo
+COPY --from=builder /app/.wasp/out /app
 
-# Render CMD
-CMD ["wasp", "start", "--port", "10000", "--host", "0.0.0.0"]
+# Expose Render’s port (defaults to 10000 if not set)
+EXPOSE ${PORT:-10000}
+
+# Start the prebuilt app directly
+CMD ["sh", "-c", "cd /app && ./server --port ${PORT:-10000} --host 0.0.0.0"]
