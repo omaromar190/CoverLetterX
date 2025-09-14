@@ -1,7 +1,7 @@
 # ---------- Builder Stage ----------
 FROM debian:bookworm-slim AS builder
 
-# Install build tools and dependencies
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     curl \
     build-essential \
@@ -11,13 +11,12 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /app
 
-# Copy app source code
+# Copy project files
 COPY . .
 
-# Detect architecture and download correct Wasp binary
+# Download the correct Wasp binary based on architecture
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then \
         WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-0.15.0-linux-x86_64"; \
@@ -40,7 +39,7 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy app from builder
+# Copy app files from builder
 COPY --from=builder /app /app
 
 # Copy Wasp binary from builder
@@ -50,8 +49,9 @@ RUN chmod +x /usr/local/bin/wasp
 # Set working directory
 WORKDIR /app
 
-# Expose port if your app runs a web server (change if needed)
-EXPOSE 3000
+# Expose Render default port
+ENV PORT=10000
+EXPOSE 10000
 
-# Set default command
-CMD ["wasp", "start"]
+# Render CMD
+CMD ["wasp", "start", "--port", "10000", "--host", "0.0.0.0"]
