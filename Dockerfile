@@ -1,7 +1,7 @@
 # --- Builder stage ---
-FROM debian:bookworm-slim as builder
+FROM debian:12 AS builder
 
-# Install dependencies for Wasp build
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     curl \
     git \
@@ -12,28 +12,31 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy project files
+# Copy app source
 COPY . .
 
-# Install correct Wasp binary (multi-arch)
+# Install Wasp CLI
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then \
-        WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-0.15.0-linux-x86_64"; \
+        WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-linux-x86_64.tar.gz"; \
     elif [ "$ARCH" = "aarch64" ]; then \
-        WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-0.15.0-linux-arm64"; \
+        WASP_URL="https://github.com/wasp-lang/wasp/releases/download/v0.15.0/wasp-linux-arm64.tar.gz"; \
     else \
         echo "Unsupported architecture: $ARCH" && exit 1; \
     fi && \
-    curl -L "$WASP_URL" -o /usr/local/bin/wasp && \
-    chmod +x /usr/local/bin/wasp
+    curl -L "$WASP_URL" -o wasp.tar.gz && \
+    tar -xzf wasp.tar.gz && \
+    mv wasp /usr/local/bin/wasp && \
+    chmod +x /usr/local/bin/wasp && \
+    rm wasp.tar.gz
 
 # Build Wasp app -> generates .wasp/out directory
 RUN wasp build
 
-# --- Runtime stage ---
-FROM debian:bookworm-slim as runtime
 
-# Install only runtime deps
+# --- Runtime stage ---
+FROM debian:12 AS runtime
+
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
@@ -43,11 +46,11 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy only built artifacts instead of whole repo
+# Copy built app from builder
 COPY --from=builder /app/.wasp/out /app
 
-# Expose Render’s port (defaults to 10000 if not set)
-EXPOSE ${PORT:-10000}
+# Expose port (Wasp defaults to 3000 unless changed in main.wasp)
+EXPOSE 3000
 
-# Start the prebuilt app directly
-CMD ["sh", "-c", "cd /app && ./server --port ${PORT:-10000} --host 0.0.0.0"]
+# Run Wasp app
+CMD ["./server"]
