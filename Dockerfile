@@ -22,9 +22,9 @@ RUN ARCH=$(uname -m) && \
     fi && \
     curl -L "$WASP_URL" -o wasp.tar.gz && \
     tar -xzf wasp.tar.gz && \
-    mv wasp*/wasp /usr/local/bin/wasp && \
+    mv wasp /usr/local/bin/wasp && \
     chmod +x /usr/local/bin/wasp && \
-    rm -rf wasp.tar.gz wasp*/
+    rm -rf wasp.tar.gz
 
 # Verify installation
 RUN wasp --version
