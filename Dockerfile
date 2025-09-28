@@ -1,21 +1,26 @@
-FROM debian:bookworm-slim
+# ---- Base image ----
+FROM ubuntu:22.04
 
-# Install dependencies
+# ---- Environment variables ----
+ARG WASP_VERSION=0.15.0
+ENV DEBIAN_FRONTEND=noninteractive
+
+# ---- Install dependencies ----
 RUN apt-get update && apt-get install -y \
     curl \
-    git \
+    tar \
     build-essential \
+    git \
+    xz-utils \
+    libssl-dev \
     libpq-dev \
     pkg-config \
-    libssl-dev \
+    libffi-dev \
     libsqlite3-dev \
-    xauth \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Set a stable Wasp version
-ENV WASP_VERSION=0.15.0
-
-# Install Wasp
+# ---- Install Wasp ----
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then \
         PLATFORM="linux-x86_64"; \
@@ -28,19 +33,22 @@ RUN ARCH=$(uname -m) && \
     echo "Downloading Wasp from $WASP_URL" && \
     curl -L "$WASP_URL" -o /tmp/wasp.tar.gz && \
     tar -xzf /tmp/wasp.tar.gz -C /tmp && \
-    mv /tmp/wasp /usr/local/bin/wasp && \
+    mv /tmp/wasp-${PLATFORM}/wasp /usr/local/bin/wasp && \
     chmod +x /usr/local/bin/wasp && \
-    rm -rf /tmp/wasp.tar.gz
+    rm -rf /tmp/wasp.tar.gz /tmp/wasp-${PLATFORM}
 
-# Verify installation
-RUN wasp --version
-
-# Set working directory
+# ---- Set working directory ----
 WORKDIR /app
+
+# ---- Copy project files ----
 COPY . .
 
-# Build the Wasp app
-RUN wasp build
+# ---- Install project dependencies (example for Node.js) ----
+RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt/lists/*
+RUN npm install
 
-# Start the Wasp app
+# ---- Expose port ----
+EXPOSE 3000
+
+# ---- Default command ----
 CMD ["wasp", "start"]
